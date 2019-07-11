@@ -25,16 +25,12 @@ def run():
           if '\n' in data:
             break
         script = base64.b64decode(buf.getvalue())
+        print(u'Script:\n{}'.format(script))
         proc = subprocess.run(['bash', '-c', script],
                               stdout=subprocess.PIPE,
                               stderr=subprocess.STDOUT)
-        print('Output:\n{}'.format(proc.stdout.decode('utf-8')))
+        print(u'Output:\n{}'.format(proc.stdout.decode('utf-8')))
         conn.send(proc.stdout)
-
-
-def main(argv):
-  if len(argv) > 1:
-    raise app.UsageError('Too many command-line arguments.')
 
 
 if __name__ == '__main__':
