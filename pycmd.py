@@ -6,7 +6,7 @@ import subprocess
 import io
 
 HOST = ''
-PORT = 50007
+PORT = 4444
 
 
 def run():
