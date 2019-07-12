@@ -1,18 +1,21 @@
 #!/usr/bin/env python3
 
+import argparse
 import base64
 import socket
 import subprocess
 import io
 
-HOST = ''
-PORT = 4444
+parser = argparse.ArgumentParser()
+parser.add_argument(
+    '--port', type=int, help='The port to listen to', default=4444, nargs='?')
+args = parser.parse_args()
 
 
 def run():
   with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s.bind((HOST, PORT))
-    print('Listening on port {}'.format(PORT))
+    s.bind(('', args.port))
+    print('Listening on port {}...'.format(args.port))
     s.listen()
     while True:
       conn, addr = s.accept()
@@ -22,7 +25,7 @@ def run():
         while True:
           data = str(conn.recv(1024), 'utf-8')
           buf.write(data)
-          if '\n' in data:
+          if '\n' in data or len(data) == 0:
             break
         script = base64.b64decode(buf.getvalue())
         print(u'Script:\n{}'.format(script))
