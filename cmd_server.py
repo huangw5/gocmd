@@ -9,13 +9,17 @@ import io
 parser = argparse.ArgumentParser()
 parser.add_argument(
     '--port', type=int, help='The port to listen to', default=4444, nargs='?')
+parser.add_argument(
+    '--host', type=str, help='The host to listen to', default='127.0.0.1', nargs='?')
+args = parser.parse_args()
+
 args = parser.parse_args()
 
 
 def run():
   with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s.bind(('127.0.0.1', args.port))
-    print('Listening on port {}...'.format(args.port))
+    s.bind((args.host, args.port))
+    print('Listening on {}:{}...'.format(args.host, args.port))
     s.listen()
     while True:
       conn, addr = s.accept()
